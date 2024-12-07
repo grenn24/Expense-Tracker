@@ -68,18 +68,24 @@ const AddExpense = ({ addExpense }: Prop) => {
 						<label htmlFor="amount" className="form-label">
 							Amount
 						</label>
-						<input
-							{...register("amount", {
-								required: true,
-								validate: {
-									isNumber: (value) => /\d+/.test(value),
-								},
-							})}
-							type="text"
-							className={"form-control"}
-							id="amount"
-							autoComplete="new-password"
-						/>
+						<div className="input-group has-validation">
+							<span className="input-group-text" id="inputGroupPrepend">
+								$
+							</span>
+							<input
+								{...register("amount", {
+									required: true,
+									validate: {
+										isNumber: (value) => /\d+/.test(value),
+									},
+								})}
+								type="text"
+								className={"form-control"}
+								id="amount"
+								autoComplete="new-password"
+								aria-describedby="inputGroupPrepend"
+							/>
+						</div>
 						{errors.amount?.type === "required" ? (
 							<span style={{ color: "red" }}>The amount field is required</span>
 						) : null}
@@ -98,26 +104,30 @@ const AddExpense = ({ addExpense }: Prop) => {
 							id="category"
 							{...register("category", {
 								required: true,
+								validate: {
+									isEmpty: (value) => value !== "empty",
+								},
 							})}
-							defaultValue = "none"
+							defaultValue="empty"
 						>
-							<option value="none" disabled>
-							</option>
+							<option value="empty" disabled></option>
 							{categories.map((category, index) => (
 								<option key={index} value={category}>
 									{category}
 								</option>
 							))}
-							<option value="Custom">Custom</option>
+							<option key={categories.length} value="Custom">
+								Custom
+							</option>
 						</select>
-						{errors.category?.type === "required" ? (
+						{errors.category?.type === "isEmpty" ? (
 							<span style={{ color: "red" }}>
 								The category field is required
 							</span>
 						) : null}
 						{(watch("category") as string) === "Custom" ? (
 							<>
-								<div className="mb-3">
+								<div>
 									<input
 										{...register("customCategory", {
 											required: true,
