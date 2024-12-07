@@ -6,25 +6,34 @@ import "../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useState } from "react";
 
 interface Expense {
-  description: string;
-  amount: number;
-  category: string;
+	description: string;
+	amount: string;
+	category: (typeof categories)[number];
 }
+const categories = [
+	"Transport",
+	"Food",
+	"Entertainment",
+	"Utilities",
+	"Travel",
+] as const;
 
 function App() {
+	const [expenses, setExpenses] = useState<Expense[]>([]);
 
-  const [expenses, setExpenses] = useState<Expense[]>([]);
+	const addExpenses = (expense: Expense) => setExpenses([...expenses, expense]);
 
-  const addExpenses = (expense: Expense) => setExpenses([...expenses, expense]);
+	const deleteExpenses = (index: number) =>
+		setExpenses(expenses.filter((_, i) => i !== index));
 
-  const deleteExpenses = (index: number) => setExpenses(expenses.filter((_, i) => i !== index));
+	const resetExpenses = () => setExpenses([]);
 
 	return (
 		<>
-			<AddExpense addExpense={addExpenses} />
+			<AddExpense addExpense={addExpenses}/>
 			<br />
 			<br />
-			<ViewExpenses expenses={expenses} deleteExpense={deleteExpenses}/>
+			<ViewExpenses expenses={expenses} deleteExpense={deleteExpenses} />
 		</>
 	);
 }

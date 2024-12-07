@@ -5,18 +5,27 @@ interface Prop {
 }
 interface Expense {
 	description: string;
-	amount: number;
-	category: string;
+	amount: string;
+	category: (typeof categories)[number];
 }
+const categories = [
+	"Transport",
+	"Food",
+	"Entertainment",
+	"Utilities",
+	"Travel",
+] as const;
+
 const AddExpense = ({addExpense} : Prop) => {
-	const { register, handleSubmit, formState : { errors } } = useForm();
+	const { register, handleSubmit, formState : { errors }, reset } = useForm<Expense>();
 
 	return (
 		<>
 			<form
 				onSubmit={handleSubmit((data) => {
 					console.log(data);
-					addExpense({ ...data } as Expense);
+					addExpense({ ...data });
+					reset();
 				})}
 			>
 				<div>
@@ -85,11 +94,9 @@ const AddExpense = ({addExpense} : Prop) => {
 							})}
 						>
 							<option selected></option>
-							<option value="Transport">Transport</option>
-							<option value="Food">Food</option>
-							<option value="Entertainment">Entertainment</option>
-							<option value="Utilities">Utilities</option>
-							<option value="Travel">Travel</option>
+							{categories.map((x) => (
+								<option value={x}>{x}</option>
+							))}
 						</select>
 						{errors.category?.type === "required" ? (
 							<span style={{ color: "red" }}>

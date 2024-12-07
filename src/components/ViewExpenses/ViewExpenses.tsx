@@ -3,9 +3,16 @@ import { useForm } from "react-hook-form";
 
 interface Expense {
 	description: string;
-	amount: number;
-	category: string;
+	amount: string;
+	category: (typeof categories)[number];
 }
+const categories = [
+	"Transport",
+	"Food",
+	"Entertainment",
+	"Utilities",
+	"Travel",
+] as const;
 
 interface Prop {
 	expenses: Expense[];
@@ -35,11 +42,7 @@ const ViewExpenses = ({ expenses, deleteExpense }: Prop) => {
 					{...register("filter")}
 				>
 					<option selected>All</option>
-					<option value="Transport">Transport</option>
-					<option value="Food">Food</option>
-					<option value="Entertainment">Entertainment</option>
-					<option value="Utilities">Utilities</option>
-					<option value="Travel">Travel</option>
+					{categories.map(x => <option value={x}>{x}</option>)}
 				</select>
 			</div>
 			<table className="table">
