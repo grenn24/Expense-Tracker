@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import Categories from "../Categories";
 
 interface Prop {
 	addExpense: (expense: Expense) => void;
@@ -6,15 +7,8 @@ interface Prop {
 interface Expense {
 	description: string;
 	amount: string;
-	category: (typeof categories)[number];
+	category: (typeof Categories)[number];
 }
-const categories = [
-	"Transport",
-	"Food",
-	"Entertainment",
-	"Utilities",
-	"Travel",
-] as const;
 
 const AddExpense = ({ addExpense }: Prop) => {
 	const {
@@ -99,7 +93,7 @@ const AddExpense = ({ addExpense }: Prop) => {
 							})}
 						>
 							<option selected></option>
-							{categories.map((x) => (
+							{Categories.map((x) => (
 								<option value={x}>{x}</option>
 							))}
 						</select>

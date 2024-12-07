@@ -1,18 +1,13 @@
 import { MdDeleteForever } from "react-icons/md";
 import { useForm } from "react-hook-form";
+import Categories from "../Categories";
 
 interface Expense {
 	description: string;
 	amount: string;
-	category: (typeof categories)[number];
+	category: (typeof Categories)[number];
 }
-const categories = [
-	"Transport",
-	"Food",
-	"Entertainment",
-	"Utilities",
-	"Travel",
-] as const;
+
 
 interface Prop {
 	expenses: Expense[];
@@ -42,7 +37,7 @@ const ViewExpenses = ({ expenses, deleteExpense }: Prop) => {
 					{...register("filter")}
 				>
 					<option selected>All</option>
-					{categories.map(x => <option value={x}>{x}</option>)}
+					{Categories.map(x => <option value={x}>{x}</option>)}
 				</select>
 			</div>
 			<table className="table">

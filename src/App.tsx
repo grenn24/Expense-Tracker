@@ -4,19 +4,13 @@ import ViewExpenses from "./components/ViewExpenses";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useState } from "react";
+import Categories from "./components/Categories";
 
 interface Expense {
 	description: string;
 	amount: string;
-	category: (typeof categories)[number];
+	category: (typeof Categories)[number];
 }
-const categories = [
-	"Transport",
-	"Food",
-	"Entertainment",
-	"Utilities",
-	"Travel",
-] as const;
 
 function App() {
 	const [expenses, setExpenses] = useState<Expense[]>([]);
