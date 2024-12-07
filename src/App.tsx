@@ -4,12 +4,12 @@ import ViewExpenses from "./components/ViewExpenses";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useState } from "react";
-import Categories from "./components/Categories";
+import {categories} from "./components/Categories";
 
 interface Expense {
 	description: string;
 	amount: string;
-	category: (typeof Categories)[number];
+	category: (typeof categories)[number];
 }
 
 function App() {
@@ -19,6 +19,7 @@ function App() {
 
 	const deleteExpenses = (index: number) =>
 		setExpenses(expenses.filter((_, i) => i !== index));
+
 
 	return (
 		<>

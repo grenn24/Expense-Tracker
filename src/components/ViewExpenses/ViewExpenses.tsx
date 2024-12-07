@@ -1,11 +1,11 @@
 import { MdDeleteForever } from "react-icons/md";
 import { useForm } from "react-hook-form";
-import Categories from "../Categories";
+import { categories } from "../Categories";
 
 interface Expense {
 	description: string;
 	amount: string;
-	category: (typeof Categories)[number];
+	category: (typeof categories)[number];
 }
 
 
@@ -35,9 +35,10 @@ const ViewExpenses = ({ expenses, deleteExpense }: Prop) => {
 					aria-label="Default select example"
 					id="filter"
 					{...register("filter")}
+					defaultValue="All"
 				>
-					<option selected>All</option>
-					{Categories.map(x => <option value={x}>{x}</option>)}
+					<option>All</option>
+					{categories.map((category, index) => <option key={index} value={category}>{category}</option>)}
 				</select>
 			</div>
 			<table className="table">

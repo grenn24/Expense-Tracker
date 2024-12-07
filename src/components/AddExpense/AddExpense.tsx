@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import Categories from "../Categories";
+import { categories, setCategories } from "../Categories";
 
 interface Prop {
 	addExpense: (expense: Expense) => void;
@@ -7,7 +7,8 @@ interface Prop {
 interface Expense {
 	description: string;
 	amount: string;
-	category: (typeof Categories)[number];
+	category: (typeof categories)[number];
+	customCategory?: string;
 }
 
 const AddExpense = ({ addExpense }: Prop) => {
@@ -16,6 +17,7 @@ const AddExpense = ({ addExpense }: Prop) => {
 		handleSubmit,
 		formState: { errors },
 		reset,
+		watch,
 	} = useForm<Expense>();
 
 	return (
@@ -23,7 +25,13 @@ const AddExpense = ({ addExpense }: Prop) => {
 			<form
 				onSubmit={handleSubmit((data) => {
 					console.log(data);
+					if (data.customCategory !== undefined) {
+						setCategories([...categories, data.customCategory]);
+						data.category = data.customCategory;
+						delete data.customCategory;
+					}
 					addExpense({ ...data });
+					console.log(data);
 					reset();
 				})}
 			>
@@ -91,16 +99,41 @@ const AddExpense = ({ addExpense }: Prop) => {
 							{...register("category", {
 								required: true,
 							})}
+							defaultValue = "none"
 						>
-							<option selected></option>
-							{Categories.map((x) => (
-								<option value={x}>{x}</option>
+							<option value="none" disabled>
+							</option>
+							{categories.map((category, index) => (
+								<option key={index} value={category}>
+									{category}
+								</option>
 							))}
+							<option value="Custom">Custom</option>
 						</select>
 						{errors.category?.type === "required" ? (
 							<span style={{ color: "red" }}>
 								The category field is required
 							</span>
+						) : null}
+						{(watch("category") as string) === "Custom" ? (
+							<>
+								<div className="mb-3">
+									<input
+										{...register("customCategory", {
+											required: true,
+										})}
+										type="text"
+										className="form-control"
+										id="customCategory"
+										placeholder="Add a custom category"
+									/>
+								</div>
+								{errors?.customCategory?.type === "required" ? (
+									<span style={{ color: "red" }}>
+										Please enter a custom category
+									</span>
+								) : null}
+							</>
 						) : null}
 					</div>
 

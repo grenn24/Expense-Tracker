@@ -1,4 +1,4 @@
-const categories = [
+export let categories: ReadonlyArray<string> = [
 	"Transport",
 	"Food",
 	"Entertainment",
@@ -6,4 +6,5 @@ const categories = [
 	"Travel",
 ] as const;
 
-export default categories;
+export const setCategories = (newCategories: ReadonlyArray<string>) =>
+	(categories = newCategories);
