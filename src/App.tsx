@@ -26,11 +26,9 @@ function App() {
 	const deleteExpenses = (index: number) =>
 		setExpenses(expenses.filter((_, i) => i !== index));
 
-	const resetExpenses = () => setExpenses([]);
-
 	return (
 		<>
-			<AddExpense addExpense={addExpenses}/>
+			<AddExpense addExpense={addExpenses} />
 			<br />
 			<br />
 			<ViewExpenses expenses={expenses} deleteExpense={deleteExpenses} />

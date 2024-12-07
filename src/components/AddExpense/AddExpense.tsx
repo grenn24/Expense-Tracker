@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 
 interface Prop {
-	addExpense: (expense: Expense) => void
+	addExpense: (expense: Expense) => void;
 }
 interface Expense {
 	description: string;
@@ -16,8 +16,13 @@ const categories = [
 	"Travel",
 ] as const;
 
-const AddExpense = ({addExpense} : Prop) => {
-	const { register, handleSubmit, formState : { errors }, reset } = useForm<Expense>();
+const AddExpense = ({ addExpense }: Prop) => {
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+		reset,
+	} = useForm<Expense>();
 
 	return (
 		<>
@@ -53,7 +58,7 @@ const AddExpense = ({addExpense} : Prop) => {
 						) : null}
 						{errors.description?.type === "minLength" ? (
 							<span style={{ color: "red" }}>
-								The description must be at least 3 words
+								The description must contain at least 3 characters
 							</span>
 						) : null}
 					</div>
