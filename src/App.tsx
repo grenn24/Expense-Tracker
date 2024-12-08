@@ -46,6 +46,8 @@ function App() {
 	const deleteExpenses = (index: number) =>
 		updateExpenses(expenses.filter((_, i) => i !== index));
 
+	const [currencySymbol, setCurrencySymbol] = useState<string>("$");
+
 	return (
 		<>
 			<AddExpense
@@ -56,6 +58,7 @@ function App() {
 				updateExpenses={updateExpenses}
 				categories={categories}
 				updateCategories={updateCategories}
+				setCurrencySymbol={setCurrencySymbol}
 			/>
 			<br />
 			<br />
@@ -64,6 +67,7 @@ function App() {
 				expenses={expenses}
 				deleteExpense={deleteExpenses}
 				categories={categories}
+				currencySymbol={currencySymbol}
 			/>
 		</>
 	);

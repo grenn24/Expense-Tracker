@@ -18,9 +18,10 @@ interface Prop {
 	expenses: Expense[];
 	deleteExpense: (index: number) => void;
 	categories: ReadonlyArray<String>;
+	currencySymbol: string;
 }
 
-const ViewExpenses = ({ expenses, deleteExpense, categories }: Prop) => {
+const ViewExpenses = ({ expenses, deleteExpense, categories, currencySymbol }: Prop) => {
 	const { register, watch } = useForm();
 
 	const [filteredExpenses, setFilteredExpenses] = useState<Expense[]>(expenses);
@@ -111,7 +112,7 @@ const ViewExpenses = ({ expenses, deleteExpense, categories }: Prop) => {
 						<tr key={index}>
 							<th scope="row">{index + 1}.</th>
 							<td>{expense.description}</td>
-							<td>{`\$${expense.amount}`}</td>
+							<td>{`${currencySymbol} ${expense.amount}`}</td>
 							<td>{expense.category}</td>
 							<td>{`${expense.date} | ${expense.time}`}</td>
 							<td>
@@ -124,7 +125,7 @@ const ViewExpenses = ({ expenses, deleteExpense, categories }: Prop) => {
 					<tr key={-1}>
 						<th scope="row">Total</th>
 						<td></td>
-						<td>{`\$${totalAmount}`}</td>
+						<td>{`${currencySymbol} ${totalAmount}`}</td>
 						<td></td>
 						<td></td>
 						<td></td>

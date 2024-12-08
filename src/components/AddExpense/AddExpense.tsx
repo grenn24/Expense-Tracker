@@ -6,6 +6,7 @@ interface Prop {
 	updateExpenses: (expenses: Expense[]) => void;
 	categories: ReadonlyArray<String>;
 	updateCategories: (newCategory: ReadonlyArray<String>) => void;
+	setCurrencySymbol: (currencySymbol: string) => void
 }
 interface Expense {
 	id: number;
@@ -21,7 +22,7 @@ const AddExpense = ({
 	addExpenses,
 	categories,
 	updateCategories,
-	updateExpenses,
+	updateExpenses, setCurrencySymbol
 }: Prop) => {
 	const {
 		register,
@@ -34,6 +35,7 @@ const AddExpense = ({
 	return (
 		<>
 			<form
+				className="d-flex flex-column justify-content-center"
 				onSubmit={handleSubmit((data) => {
 					if (data.customCategory !== undefined) {
 						updateCategories([...categories, data.customCategory] as const);
@@ -78,23 +80,37 @@ const AddExpense = ({
 						<label htmlFor="amount" className="form-label">
 							Amount
 						</label>
-						<div className="input-group has-validation">
-							<span className="input-group-text" id="inputGroupPrepend">
-								$
-							</span>
-							<input
-								{...register("amount", {
-									required: true,
-									validate: {
-										isNumber: (value) => /^\d+$/.test(value),
-									},
-								})}
-								type="tel"
-								className={"form-control"}
-								id="amount"
-								autoComplete="new-password"
-								aria-describedby="inputGroupPrepend"
-							/>
+						<div className="d-flex">
+							<div className="input-group has-validation">
+								<select
+									className="form-select bg-light"
+									aria-label="Default select example"
+									default-value="$"
+									style={{ flex: 1 , textAlign: "center"}}
+									onChange = {(e) => setCurrencySymbol(e.target.value)}
+								>
+									<option value="$">$</option>
+									<option value="€">€</option>
+									<option value="£">£</option>
+									<option value="¥">¥</option>
+									<option value="₣">₣</option>
+									<option value="₹">₹</option>
+								</select>
+								<input
+									{...register("amount", {
+										required: true,
+										validate: {
+											isNumber: (value) => /^\d+$/.test(value),
+										},
+									})}
+									type="tel"
+									className={"form-control"}
+									id="amount"
+									autoComplete="new-password"
+									aria-describedby="inputGroupPrepend"
+									style={{ flex: 20 }}
+								/>
+							</div>
 						</div>
 						{errors.amount?.type === "required" ? (
 							<span style={{ color: "red" }}>The amount field is required</span>
@@ -200,19 +216,19 @@ const AddExpense = ({
 					>
 						<button
 							className={`btn btn-primary me-3 w-auto`}
-							type="submit"
-							onClick={() => {}}
-						>
-							Submit Expense
-						</button>
-						<button
-							className={`btn btn-primary me-3 w-auto`}
 							type="button"
 							onClick={() => {
 								updateExpenses([]);
 							}}
 						>
 							Reset Expenses
+						</button>
+						<button
+							className={`btn btn-primary me-3 w-auto`}
+							type="submit"
+							onClick={() => {}}
+						>
+							Submit Expense
 						</button>
 						<button
 							className={`btn btn-primary me-3 w-auto`}
