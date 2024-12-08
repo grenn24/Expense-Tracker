@@ -1,6 +1,7 @@
 import "./App.css";
 import AddExpense from "./components/AddExpense";
 import ViewExpenses from "./components/ViewExpenses";
+import Header from "./components/Header/Header.js";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useState } from "react";
@@ -50,6 +51,7 @@ function App() {
 
 	return (
 		<>
+		<Header />
 			<AddExpense
 				addExpenses={(expense: Expense) => {
 					expense.id = expenses.length;

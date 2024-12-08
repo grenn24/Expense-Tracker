@@ -86,8 +86,8 @@ const AddExpense = ({
 									className="form-select bg-light"
 									aria-label="Default select example"
 									default-value="$"
-									style={{ flex: 1 , textAlign: "center"}}
-									onChange = {(e) => setCurrencySymbol(e.target.value)}
+									style={{ flex: 1, textAlign: "center" }}
+									onChange={(e) => setCurrencySymbol(e.target.value)}
 								>
 									<option value="$">$</option>
 									<option value="€">€</option>
@@ -180,13 +180,17 @@ const AddExpense = ({
 							<input
 								{...register("date", {
 									required: true,
+									validate: {
+										isEmpty: (value) => value !== "empty",
+									},
 								})}
 								type="date"
 								className={"form-control"}
 								id="date"
 								autoComplete="new-password"
+								defaultValue="empty"
 							></input>
-							{errors.date?.type === "isEmpty" ? (
+							{errors.date?.type === "required" ? (
 								<span style={{ color: "red" }}>The date field is required</span>
 							) : null}
 						</div>
@@ -197,13 +201,17 @@ const AddExpense = ({
 							<input
 								{...register("time", {
 									required: true,
+									validate: {
+										isEmpty: (value) => value !== "empty",
+									},
 								})}
 								type="time"
 								className={"form-control"}
 								id="time"
 								autoComplete="new-password"
+								defaultValue="empty"
 							></input>
-							{errors.date?.type === "isEmpty" ? (
+							{errors.time?.type === "required" ? (
 								<span style={{ color: "red" }}>The time field is required</span>
 							) : null}
 						</div>
@@ -215,7 +223,7 @@ const AddExpense = ({
 						role="toolbar"
 					>
 						<button
-							className={`btn btn-primary me-3 w-auto`}
+							className={`btn btn-secondary me-3 w-auto`}
 							type="button"
 							onClick={() => {
 								updateExpenses([]);
@@ -231,7 +239,7 @@ const AddExpense = ({
 							Submit Expense
 						</button>
 						<button
-							className={`btn btn-primary me-3 w-auto`}
+							className={`btn btn-secondary me-3 w-auto`}
 							type="button"
 							onClick={() => {
 								updateCategories(initialCategories);
