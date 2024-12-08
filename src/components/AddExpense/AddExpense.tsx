@@ -1,17 +1,28 @@
 import { useForm } from "react-hook-form";
-import { categories, setCategories } from "../Categories";
+import { initialCategories } from "../InitialCategories.js";
 
 interface Prop {
-	addExpense: (expense: Expense) => void;
+	addExpenses: (expense: Expense) => void;
+	updateExpenses: (expenses: Expense[]) => void;
+	categories: ReadonlyArray<String>;
+	updateCategories: (newCategory: ReadonlyArray<String>) => void;
 }
 interface Expense {
+	id: number;
 	description: string;
 	amount: string;
-	category: (typeof categories)[number];
+	category: any;
 	customCategory?: string;
+	date: string;
+	time: string;
 }
 
-const AddExpense = ({ addExpense }: Prop) => {
+const AddExpense = ({
+	addExpenses,
+	categories,
+	updateCategories,
+	updateExpenses,
+}: Prop) => {
 	const {
 		register,
 		handleSubmit,
@@ -24,13 +35,12 @@ const AddExpense = ({ addExpense }: Prop) => {
 		<>
 			<form
 				onSubmit={handleSubmit((data) => {
-					console.log(data);
 					if (data.customCategory !== undefined) {
-						setCategories([...categories, data.customCategory]);
+						updateCategories([...categories, data.customCategory] as const);
 						data.category = data.customCategory;
 						delete data.customCategory;
 					}
-					addExpense({ ...data });
+					addExpenses({ ...data });
 					console.log(data);
 					reset();
 				})}
@@ -45,7 +55,7 @@ const AddExpense = ({ addExpense }: Prop) => {
 							{...register("description", {
 								required: true,
 								validate: {
-									minLength: (value) => value.length >= 3,
+									minLength: (value: string) => value.length >= 3,
 								},
 							})}
 							type="text"
@@ -76,10 +86,10 @@ const AddExpense = ({ addExpense }: Prop) => {
 								{...register("amount", {
 									required: true,
 									validate: {
-										isNumber: (value) => /\d+/.test(value),
+										isNumber: (value) => /^\d+$/.test(value),
 									},
 								})}
-								type="text"
+								type="tel"
 								className={"form-control"}
 								id="amount"
 								autoComplete="new-password"
@@ -112,7 +122,7 @@ const AddExpense = ({ addExpense }: Prop) => {
 						>
 							<option value="empty" disabled></option>
 							{categories.map((category, index) => (
-								<option key={index} value={category}>
+								<option key={index} value={category as string}>
 									{category}
 								</option>
 							))}
@@ -146,15 +156,74 @@ const AddExpense = ({ addExpense }: Prop) => {
 							</>
 						) : null}
 					</div>
+					<div className="row">
+						<div className="mb-3 col">
+							<label htmlFor="date" className="form-label">
+								Date
+							</label>
+							<input
+								{...register("date", {
+									required: true,
+								})}
+								type="date"
+								className={"form-control"}
+								id="date"
+								autoComplete="new-password"
+							></input>
+							{errors.date?.type === "isEmpty" ? (
+								<span style={{ color: "red" }}>The date field is required</span>
+							) : null}
+						</div>
+						<div className="mb-3 col">
+							<label htmlFor="time" className="form-label">
+								Time
+							</label>
+							<input
+								{...register("time", {
+									required: true,
+								})}
+								type="time"
+								className={"form-control"}
+								id="time"
+								autoComplete="new-password"
+							></input>
+							{errors.date?.type === "isEmpty" ? (
+								<span style={{ color: "red" }}>The time field is required</span>
+							) : null}
+						</div>
+					</div>
 
 					<br />
-					<button
-						className={`btn btn-primary`}
-						type="submit"
-						onClick={() => {}}
+					<div
+						className="btn-toolbar d-flex justify-content-center"
+						role="toolbar"
 					>
-						Submit Expense
-					</button>
+						<button
+							className={`btn btn-primary me-3 w-auto`}
+							type="submit"
+							onClick={() => {}}
+						>
+							Submit Expense
+						</button>
+						<button
+							className={`btn btn-primary me-3 w-auto`}
+							type="button"
+							onClick={() => {
+								updateExpenses([]);
+							}}
+						>
+							Reset Expenses
+						</button>
+						<button
+							className={`btn btn-primary me-3 w-auto`}
+							type="button"
+							onClick={() => {
+								updateCategories(initialCategories);
+							}}
+						>
+							Reset Categories
+						</button>
+					</div>
 				</div>
 			</form>
 		</>
